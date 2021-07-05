@@ -37,7 +37,10 @@ variable "udr1-name" {
 variable "nsg1-name" {
 }
 
-variable "vnet-cidr" {
+variable "hub-cidr" {
+}
+
+variable "spoke-cidr" {
 }
 
 variable "snet1-cidr" {

@@ -11,7 +11,7 @@ resource "azurerm_resource_group" "nsg" {
 
 resource "azurerm_virtual_network" "spoke" {
 	name 				= "vnet-${var.spoke-name}-${var.region_code}"
-	address_space 		= ["${var.vnet-cidr}"]
+	address_space 		= ["${var.spoke-cidr}"]
 	location 			= azurerm_resource_group.spoke.location
 	resource_group_name = azurerm_resource_group.spoke.name
 }

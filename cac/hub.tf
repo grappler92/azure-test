@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "hub" {
 
 resource "azurerm_virtual_network" "hub" {
 	name 				= "vnet-${var.hub-name}-${var.region_code}"
-	address_space 		= ["${var.vnet-cidr}"]
+	address_space 		= ["${var.hub-cidr}"]
 	location 			= azurerm_resource_group.hub.location
 	resource_group_name = azurerm_resource_group.hub.name
 }
