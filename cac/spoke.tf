@@ -12,8 +12,8 @@ resource "azurerm_resource_group" "nsg" {
 resource "azurerm_virtual_network" "spoke" {
 	name 				= "vnet-${var.spoke-name}-${var.region_code}"
 	address_space 		= ["${var.vnet-cidr}"]
-	location 			= azurerm_resource_group.network.location
-	resource_group_name = azurerm_resource_group.network.name
+	location 			= azurerm_resource_group.spoke.location
+	resource_group_name = azurerm_resource_group.spoke.name
 }
 
 resource "azurerm_virtual_network_peering" "spoke" {
@@ -25,37 +25,37 @@ resource "azurerm_virtual_network_peering" "spoke" {
 
 resource "azurerm_subnet" "snet-1" {
 	name 					= "snet-${var.snet-1-name}-${var.region_code}"
-	resource_group_name 	= azurerm_resource_group.network.name
-	virtual_network_name 	= azurerm_virtual_network.network.name
+	resource_group_name 	= azurerm_resource_group.spoke.name
+	virtual_network_name 	= azurerm_virtual_network.spoke.name
 	address_prefixes 		= ["${var.snet1-cidr}"]
 }
 
 resource "azurerm_subnet" "snet-2" {
 	name 					= "snet-${var.snet-2-name}-${var.region_code}"
-	resource_group_name 	= azurerm_resource_group.network.name
-	virtual_network_name 	= azurerm_virtual_network.network.name
+	resource_group_name 	= azurerm_resource_group.spoke.name
+	virtual_network_name 	= azurerm_virtual_network.spoke.name
 	address_prefixes 		= ["${var.snet2-cidr}"]
 }
 
 resource "azurerm_subnet" "snet-3" {
 	name 					= "snet-${var.snet-3-name}-${var.region_code}"
-	resource_group_name 	= azurerm_resource_group.network.name
-	virtual_network_name 	= azurerm_virtual_network.network.name
+	resource_group_name 	= azurerm_resource_group.spoke.name
+	virtual_network_name 	= azurerm_virtual_network.spoke.name
 	address_prefixes 		= ["${var.snet3-cidr}"]
 }
 
 resource "azurerm_subnet" "snet-4" {
 	name 					= "snet-${var.snet-4-name}-${var.region_code}"
-	resource_group_name 	= azurerm_resource_group.network.name
-	virtual_network_name 	= azurerm_virtual_network.network.name
+	resource_group_name 	= azurerm_resource_group.spoke.name
+	virtual_network_name 	= azurerm_virtual_network.spoke.name
 	address_prefixes 		= ["${var.snet4-cidr}"]
 	enforce_private_link_endpoint_network_policies = true
 }
 
 resource "azurerm_route_table" "udr-1" {
 	name 							= "udr-${var.udr1-name}-${var.region_code}"
-	location 						= azurerm_resource_group.network.location
-	resource_group_name 			= azurerm_resource_group.network.name
+	location 						= azurerm_resource_group.spoke.location
+	resource_group_name 			= azurerm_resource_group.spoke.name
 	disable_bgp_route_propagation 	= true
 
 	route {
@@ -83,7 +83,7 @@ resource "azurerm_subnet_route_table_association" "snet-3" {
 resource "azurerm_network_security_group" "nsg-1" {
 	name 					= "udr-${var.nsg1-name}-${var.region_code}"
 	resource_group_name 	= azurerm_resource_group.nsg.name
-	location 				= azurerm_resource_group.network.location
+	location 				= azurerm_resource_group.spoke.location
 }
 
 resource "azurerm_network_security_rule" "rule-1" {
