@@ -41,7 +41,7 @@ resource "azurerm_route_table" "udr-1" {
 	name 							= "udr-1"
 	location 						= azurerm_resource_group.network.location
 	resource_group_name 			= azurerm_resource_group.network.name
-	disable_bgp_route_propogation 	= true
+	disable_bgp_route_propagation 	= true
 
 	route {
 		name 			= "default-gateway"
