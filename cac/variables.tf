@@ -13,7 +13,10 @@ variable "spoke-name" {
 variable "nsg-name" {
 }
 
-variable "rg-vnet-name" {
+variable "rg-vnet-hub-name" {
+}
+
+variable "rg-vnet-spoke-name" {
 }
 
 variable "snet-1-name" {

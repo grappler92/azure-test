@@ -1,6 +1,6 @@
 
 resource "azurerm_resource_group" "hub" {
-	name 		= "rg-${var.rg-vnet-name}-${var.region_code}"
+	name 		= "rg-${var.rg-vnet-hub-name}-${var.region_code}"
 	location 	= var.region
 }
 

@@ -1,6 +1,6 @@
 
 resource "azurerm_resource_group" "spoke" {
-	name 		= "rg-${var.vnet-name}-${var.region_code}"
+	name 		= "rg-${var.rg-vnet-spoke-name}-${var.region_code}"
 	location 	= var.region
 }
 
