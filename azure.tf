@@ -37,6 +37,14 @@ resource "azurerm_subnet" "snet-3" {
 	address_prefixes 		= ["10.0.3.0/24"]
 }
 
+resource "azurerm_subnet" "snet-4" {
+	name 					= "PrivateEndpoint"
+	resource_group_name 	= azurerm_resource_group.network.name
+	virtual_network_name 	= azurerm_virtual_network.network.name
+	address_prefixes 		= ["10.0.4.0/24"]
+	enforce_private_link_endpoint_network_policies = true
+}
+
 resource "azurerm_route_table" "udr-1" {
 	name 							= "udr-1"
 	location 						= azurerm_resource_group.network.location
