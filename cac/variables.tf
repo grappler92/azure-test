@@ -19,13 +19,19 @@ variable "rg-vnet-hub-name" {
 variable "rg-vnet-spoke-name" {
 }
 
-variable "snet-1-name" {
+variable "snet-gw-name" {
 }
 
-variable "snet-2-name" {
+variable "snet-gw-cidr" {
 }
 
-variable "snet-3-name" {
+variable "snet-pres-name" {
+}
+
+variable "snet-app-name" {
+}
+
+variable "snet-db-name" {
 }
 
 variable "snet-4-name" {

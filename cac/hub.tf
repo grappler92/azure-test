@@ -11,6 +11,13 @@ resource "azurerm_virtual_network" "hub" {
 	resource_group_name = azurerm_resource_group.hub.name
 }
 
+resource "azurerm_subnet" "gateway" {
+	name 					= "snet-${var.snet-gw-name}-${var.region_code}"
+	resource_group_name 	= azurerm_resource_group.hub.name
+	virtual_network_name 	= azurerm_virtual_network.hub.name
+	address_prefixes 		= ["${var.snet-gw-cidr}"]
+}
+
 resource "azurerm_virtual_network_peering" "hub" {
 	name 						= "peer-${var.spoke-name}-${var.region_code}"
 	resource_group_name 		= azurerm_resource_group.hub.name

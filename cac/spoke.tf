@@ -4,11 +4,6 @@ resource "azurerm_resource_group" "spoke" {
 	location 	= var.region
 }
 
-resource "azurerm_resource_group" "nsg" {
-	name 		= "rg-${var.nsg-name}-${var.region_code}"
-	location 	= var.region
-}
-
 resource "azurerm_virtual_network" "spoke" {
 	name 				= "vnet-${var.spoke-name}-${var.region_code}"
 	address_space 		= ["${var.spoke-cidr}"]
@@ -23,22 +18,22 @@ resource "azurerm_virtual_network_peering" "spoke" {
 	remote_virtual_network_id 	= azurerm_virtual_network.hub.id
 }
 
-resource "azurerm_subnet" "snet-1" {
-	name 					= "snet-${var.snet-1-name}-${var.region_code}"
+resource "azurerm_subnet" "presentation" {
+	name 					= "snet-${var.snet-pres-name}-${var.region_code}"
 	resource_group_name 	= azurerm_resource_group.spoke.name
 	virtual_network_name 	= azurerm_virtual_network.spoke.name
 	address_prefixes 		= ["${var.snet1-cidr}"]
 }
 
-resource "azurerm_subnet" "snet-2" {
-	name 					= "snet-${var.snet-2-name}-${var.region_code}"
+resource "azurerm_subnet" "application" {
+	name 					= "snet-${var.snet-app-name}-${var.region_code}"
 	resource_group_name 	= azurerm_resource_group.spoke.name
 	virtual_network_name 	= azurerm_virtual_network.spoke.name
 	address_prefixes 		= ["${var.snet2-cidr}"]
 }
 
-resource "azurerm_subnet" "snet-3" {
-	name 					= "snet-${var.snet-3-name}-${var.region_code}"
+resource "azurerm_subnet" "database" {
+	name 					= "snet-${var.snet-db-name}-${var.region_code}"
 	resource_group_name 	= azurerm_resource_group.spoke.name
 	virtual_network_name 	= azurerm_virtual_network.spoke.name
 	address_prefixes 		= ["${var.snet3-cidr}"]
@@ -80,37 +75,64 @@ resource "azurerm_subnet_route_table_association" "snet-3" {
 	route_table_id	= azurerm_route_table.udr-1.id
 }
 
-resource "azurerm_network_security_group" "nsg-1" {
-	name 					= "udr-${var.nsg1-name}-${var.region_code}"
-	resource_group_name 	= azurerm_resource_group.nsg.name
-	location 				= azurerm_resource_group.spoke.location
-}
+# resource "azurerm_resource_group" "nsg" {
+# 	name 		= "rg-${var.nsg-name}-${var.region_code}"
+# 	location 	= var.region
+# }
 
-resource "azurerm_network_security_rule" "rule-1" {
-	name 						= "nsg-1"
-	priority 					= 110
-	direction 					= "Inbound"
-	access 						= "Allow"
-	protocol 					= "Tcp"
-	source_port_range 			= "*"
-	destination_port_range 		= "22"
-	source_address_prefix 		= "*"
-	destination_address_prefix 	= "*"
-	resource_group_name 		= azurerm_resource_group.nsg.name
-	network_security_group_name	= azurerm_network_security_group.nsg-1.name
-	}
+# resource "azurerm_network_security_group" "nsg-1" {
+# 	name 					= "udr-${var.nsg1-name}-${var.region_code}"
+# 	resource_group_name 	= azurerm_resource_group.nsg.name
+# 	location 				= azurerm_resource_group.spoke.location
+# }
 
-resource "azurerm_subnet_network_security_group_association" "snet-1" {
-	subnet_id					= azurerm_subnet.snet-1.id
-	network_security_group_id	= azurerm_network_security_group.nsg-1.id
-}
+# resource "azurerm_network_security_rule" "rule-1" {
+# 	name 						= "nsg-1"
+# 	priority 					= 110
+# 	direction 					= "Inbound"
+# 	access 						= "Allow"
+# 	protocol 					= "Tcp"
+# 	source_port_range 			= "*"
+# 	destination_port_range 		= "22"
+# 	source_address_prefix 		= "*"
+# 	destination_address_prefix 	= "*"
+# 	resource_group_name 		= azurerm_resource_group.nsg.name
+# 	network_security_group_name	= azurerm_network_security_group.nsg-1.name
+# 	}
 
-resource "azurerm_subnet_network_security_group_association" "snet-2" {
-	subnet_id					= azurerm_subnet.snet-2.id
-	network_security_group_id	= azurerm_network_security_group.nsg-1.id
-}
+# resource "azurerm_subnet_network_security_group_association" "snet-1" {
+# 	subnet_id					= azurerm_subnet.snet-1.id
+# 	network_security_group_id	= azurerm_network_security_group.nsg-1.id
+# }
 
-resource "azurerm_subnet_network_security_group_association" "snet-3" {
-	subnet_id					= azurerm_subnet.snet-3.id
-	network_security_group_id	= azurerm_network_security_group.nsg-1.id
-}
+# resource "azurerm_subnet_network_security_group_association" "snet-2" {
+# 	subnet_id					= azurerm_subnet.snet-2.id
+# 	network_security_group_id	= azurerm_network_security_group.nsg-1.id
+# }
+
+# resource "azurerm_subnet_network_security_group_association" "snet-3" {
+# 	subnet_id					= azurerm_subnet.snet-3.id
+# 	network_security_group_id	= azurerm_network_security_group.nsg-1.id
+# }
+
+module "nsg-test" {
+	version = "v0.1"                                                      ## Mandatory , please use the most current version
+ 	rules = {
+    	test-rule-1 = {                                       ## Mandatory Name of the Firewall Rule
+      	name          		= "test01"     ## Mandatory Description of FW Rule
+      	direction            	= "Inbound"                                  ## Mandatory Direction INGRESS | EGRESS 
+      	access               	= "Allow"                                    ## Mandatory Allow | Deny
+     	ip_ranges            	= ["10.2.0.0/24"]                         ## Mandatory list variable to be used as source IP when Direction = INGRESS or destination IP when Direction = EGRESS
+	  	sources				= null
+      	service = [                                                       ## Mandatory services List
+        	{
+          		protocol = "Tcp"       ### String Var
+          		ports    = ["443"]     ### List Var
+        	}
+      	]
+    extra_attributes = {    ### Optional list variable to set priority or any future addtion to the format 
+        priority = "110"     ### required (default value is 1000)
+        }
+    }
+  }
+}	
