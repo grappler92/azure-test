@@ -56,7 +56,6 @@ resource "azurerm_network_security_rule" "rule-1" {
 	resource_group_name 		= azurerm_resource_group.nsg.name
 	network_security_group_name	= azurerm_network_security_group.nsg-1.name
 	}
-}
 
 resource "azurerm_subnet_network_security_group_association" "snet-1" {
 	subnet_id					= azurerm_subnet.snet-1.id
