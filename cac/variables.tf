@@ -4,13 +4,16 @@ variable "region" {
 variable "region_code" {
 }
 
-variable "network-name" {
+variable "hub-name" {
+}
+
+variable "spoke-name" {
 }
 
 variable "nsg-name" {
 }
 
-variable "vnet-name" {
+variable "rg-vnet-name" {
 }
 
 variable "snet-1-name" {

@@ -1,5 +1,5 @@
 
-resource "azurerm_resource_group" "network" {
+resource "azurerm_resource_group" "spoke" {
 	name 		= "rg-${var.vnet-name}-${var.region_code}"
 	location 	= var.region
 }
@@ -9,11 +9,18 @@ resource "azurerm_resource_group" "nsg" {
 	location 	= var.region
 }
 
-resource "azurerm_virtual_network" "network" {
-	name 				= "vnet-${var.network-name}-${var.region_code}"
+resource "azurerm_virtual_network" "spoke" {
+	name 				= "vnet-${var.spoke-name}-${var.region_code}"
 	address_space 		= ["${var.vnet-cidr}"]
 	location 			= azurerm_resource_group.network.location
 	resource_group_name = azurerm_resource_group.network.name
+}
+
+resource "azurerm_virtual_network_peering" "spoke" {
+	name 						= "peer-${var.hub-name}-${var.region_code}"
+	resource_group_name 		= azurerm_resource_group.spoke.name
+	virtual_network_name 		= azurerm_virtual_network.spoke.name
+	remote_virtual_network_id 	= azurerm_virtual_network.hub.id
 }
 
 resource "azurerm_subnet" "snet-1" {
