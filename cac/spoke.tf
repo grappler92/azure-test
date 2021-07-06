@@ -116,16 +116,17 @@ resource "azurerm_subnet_route_table_association" "database" {
 # }
 
 module "nsg-test" {
-	source 	= "app.terraform.io/grappler92/nsg/azurerm"
-	version = "0.0.6"                                                      ## Mandatory , please use the most current version
+	source 		= "app.terraform.io/grappler92/nsg/azurerm"
+	version 	= "0.0.7"                                                 ## Mandatory , please use the most current version
  	rg-nsg-name	= "rg-test"
 	location	= "canadacentral"
+	region_code = "cac"
 	 rules = {
     	test-rule-1 = {                                       ## Mandatory Name of the Firewall Rule
       	name          		= "test01"     ## Mandatory Description of FW Rule
-      	direction            	= "Inbound"                                  ## Mandatory Direction INGRESS | EGRESS 
-      	access               	= "Allow"                                    ## Mandatory Allow | Deny
-     	ip_ranges            	= ["10.2.0.0/24"]                         ## Mandatory list variable to be used as source IP when Direction = INGRESS or destination IP when Direction = EGRESS
+      	direction           = "Inbound"                                  ## Mandatory Direction INGRESS | EGRESS 
+      	access              = "Allow"                                    ## Mandatory Allow | Deny
+     	ip_ranges           = ["10.2.0.0/24"]                         ## Mandatory list variable to be used as source IP when Direction = INGRESS or destination IP when Direction = EGRESS
 	  	sources				= null
       	service = [                                                       ## Mandatory services List
         	{
