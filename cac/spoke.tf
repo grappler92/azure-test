@@ -75,10 +75,7 @@ resource "azurerm_subnet_route_table_association" "database" {
 	route_table_id	= azurerm_route_table.udr-1.id
 }
 
-# resource "azurerm_resource_group" "nsg" {
-# 	name 		= "rg-${var.nsg-name}-${var.region_code}"
-# 	location 	= var.region
-# }
+
 
 # resource "azurerm_network_security_group" "nsg-1" {
 # 	name 					= "udr-${var.nsg1-name}-${var.region_code}"
@@ -115,28 +112,33 @@ resource "azurerm_subnet_route_table_association" "database" {
 # 	network_security_group_id	= azurerm_network_security_group.nsg-1.id
 # }
 
+
+resource "azurerm_resource_group" "nsg-rg" {
+	name 		= "rg-${var.nsg-name}-${var.region_code}"
+	location 	= var.region
+}
+
 module "nsg-test" {
-	source 		= "app.terraform.io/grappler92/nsg/azurerm"
-	version 	= "0.0.8"                                                 ## Mandatory , please use the most current version
- 	rg-nsg-name	= "rg-test"
-	location	= "canadacentral"
-	region_code = "cac"
-	 rules = {
-    	test-rule-1 = {                                       ## Mandatory Name of the Firewall Rule
-      	name          		= "test01"     ## Mandatory Description of FW Rule
-      	direction           = "Inbound"                                  ## Mandatory Direction INGRESS | EGRESS 
-      	access              = "Allow"                                    ## Mandatory Allow | Deny
-     	ip_ranges           = ["10.2.0.0/24"]                         ## Mandatory list variable to be used as source IP when Direction = INGRESS or destination IP when Direction = EGRESS
-	  	sources				= null
-      	service = [                                                       ## Mandatory services List
-        	{
-          		protocol 				= "Tcp"       ### String Var
-          		destination_port_range  = ["443"]     ### List Var
-        	}
-      	]
-    extra_attributes = {    ### Optional list variable to set priority or any future addtion to the format 
-        priority = "110"     ### required (default value is 1000)
-        }
-    }
-  }
+	source 		= "app.terraform.io/grappler92/network-security-group/azurerm"
+	resource_group_name 	= azurerm_resource_group.nsg-rg.name
+	security_group_name		= "nsg-test-cac"
+	custom_rules = [
+		{
+		name 					= "my-test"
+		priority 				= "200"
+		direction				= "Inbound"
+		access					= "Allow"
+		protocol				= "tcp"
+		source_port_range 		= "*"
+		destination_port_range	= "443"
+		source_address_prefixes	= ["10.2.0.0/24"]
+		description				= "my test nsg using public module"
+	},
+	]
+	tags = {
+		environment	= "test"
+		costcenter	= "1111"
+	}
+
+	depends_on = [azurerm_resource_group.nsg-rg]
 }	
