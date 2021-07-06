@@ -30,6 +30,7 @@ resource "azurerm_resource_group" "spoke" {
 
 module "vnet-spoke" {
 	source 				= "Azure/vnet/azurerm"
+    version             = "2.5.0"
 	resource_group_name	= azurerm_resource_group.spoke.name
     vnet_name           = "vnet-${var.spoke-name}-${var.region_code}"
 	address_space		= ["10.1.0.0/16"]
@@ -39,18 +40,18 @@ module "vnet-spoke" {
 	depends_on = [azurerm_resource_group.spoke]	
 }
 
-resource "azurerm_route_table" "udr-1" {
-	name 							= "udr-${var.udr1-name}-${var.region_code}"
-	location 						= azurerm_resource_group.spoke.location
-	resource_group_name 			= azurerm_resource_group.spoke.name
-	disable_bgp_route_propagation 	= true
+# resource "azurerm_route_table" "udr-1" {
+# 	name 							= "udr-${var.udr1-name}-${var.region_code}"
+# 	location 						= azurerm_resource_group.spoke.location
+# 	resource_group_name 			= azurerm_resource_group.spoke.name
+# 	disable_bgp_route_propagation 	= true
 
-	route {
-		name 			= "default-gateway"
-		address_prefix 	= "0.0.0.0/0"
-		next_hop_type 	= "Internet"
-	}
-}
+# 	route {
+# 		name 			= "default-gateway"
+# 		address_prefix 	= "0.0.0.0/0"
+# 		next_hop_type 	= "Internet"
+# 	}
+# }
 
 resource "azurerm_resource_group" "udr-spoke" {
 	name 		= "rg-${var.rg-udr-spoke-name}-${var.region_code}"
@@ -59,6 +60,7 @@ resource "azurerm_resource_group" "udr-spoke" {
 
 module "udr-spoke" {
     source              = "Azure/routetable/azurerm"
+    version             = "1.0.0"
     resource_group_name = azurerm_resource_group.udr-spoke.name
     location            = azurerm_resource_group.udr-spoke.location
     route_table_name    = "udr-${var.rg-udr-spoke-name}-${var.region_code}"
@@ -78,7 +80,8 @@ resource "azurerm_resource_group" "nsg-rg" {
 }
 
 module "network-security-group" {
-	source 		= "Azure/network-security-group/azurerm"
+	source 		            = "Azure/network-security-group/azurerm"
+    version                 = "3.6.0"
 	resource_group_name 	= azurerm_resource_group.nsg-rg.name
 	security_group_name		= "nsg-test-cac"
 	custom_rules = [
