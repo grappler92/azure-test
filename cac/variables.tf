@@ -16,6 +16,9 @@ variable "nsg-name" {
 variable "rg-vnet-hub-name" {
 }
 
+variable "rg-udr-spoke-name" {
+}
+
 variable "rg-vnet-spoke-name" {
 }
 

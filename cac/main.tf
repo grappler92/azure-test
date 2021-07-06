@@ -67,13 +67,32 @@ resource "azurerm_route_table" "udr-1" {
 	}
 }
 
+resource "azurerm_resource_group" "udr-spoke" {
+	name 		= "rg-${var.rg-udr-spoke-name}-${var.region_code}"
+	location 	= var.region
+}
+
+module "udr-spoke" {
+    source              = "Azure/routetable/azurerm"
+    resource_group_name = azurerm_resource_group.udr-spoke.name
+    location            = azurerm_resource_group.udr-spoke.location
+    route_table_name    = "udr-${var.rg-udr-spoke-name}-${var.region_code}"
+    route_prefixes      = ["0.0.0.0/0"]
+    route_nexthop_types = ["Internet"]
+    route_names         = ["default-route"]
+
+    tags = {
+        environment = "test"
+        costcenter  = "1111"
+    }
+}
+
 resource "azurerm_resource_group" "nsg-rg" {
 	name 		= "rg-${var.nsg-name}-${var.region_code}"
 	location 	= var.region
 }
 
 module "network-security-group" {
-	# source 		= "app.terraform.io/grappler92/network-security-group/azurerm"
 	source 		= "Azure/network-security-group/azurerm"
 	resource_group_name 	= azurerm_resource_group.nsg-rg.name
 	security_group_name		= "nsg-test-cac"
