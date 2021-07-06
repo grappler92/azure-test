@@ -116,9 +116,11 @@ resource "azurerm_subnet_route_table_association" "snet-3" {
 # }
 
 module "nsg-test" {
-	source 	= "app.terraform.io/app/grappler92/workspaces/terraform-azurerm-nsg/?ref=v0.2"
-	# version = "v0.2"                                                      ## Mandatory , please use the most current version
- 	rules = {
+	source 	= "app.terraform.io/app/grappler92/workspaces/terraform-azurerm-nsg"
+	version = "v0.3"                                                      ## Mandatory , please use the most current version
+ 	rg-nsg-name	= "rg-test"
+	location	= "canadacentral"
+	 rules = {
     	test-rule-1 = {                                       ## Mandatory Name of the Firewall Rule
       	name          		= "test01"     ## Mandatory Description of FW Rule
       	direction            	= "Inbound"                                  ## Mandatory Direction INGRESS | EGRESS 
