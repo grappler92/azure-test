@@ -21,7 +21,7 @@ module "canadacentral" {
     snet4-cidr          = "10.1.4.0/24"
     udr1-name           = "one"
     nsg1-name           = "one"
-    rg-udr-spoke-name   = "test"
+    rg-udr-spoke-name   = "udr"
 }
 
 # module "canadaeast" {

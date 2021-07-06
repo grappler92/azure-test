@@ -58,6 +58,20 @@ resource "azurerm_resource_group" "udr-spoke" {
 	location 	= var.region
 }
 
+resource "azurerm_route_table" "udr-spoke" {
+    name                = "udr-${var.rg-udr-spoke-name}-${var.region_code}"
+    location            = azurerm_resource_group.udr-spoke.location
+    resource_group_name = azurerm_resource_group.udr-spoke.name
+}
+
+resource "azurerm_route" "default" {
+    name                = "Default-Route"
+    resource_group_name = azurerm_resource_group.udr-spoke.name
+    route_table_name    = azurerm_route_table.udr-spoke.name
+    address_prefix      = "0.0.0.0/0"
+    next_hop_type       = "Internet"
+}
+
 # module "udr-spoke" {
 #     source              = "Azure/routetable/azurerm"
 #     version             = "1.0.0"
