@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "hub" {
 	location 	= var.region
 }
 
-module "vnet" {
+module "vnet-hub" {
 	source 				= "Azure/vnet/azurerm"
 	resource_group_name	= azurerm_resource_group.hub.name
 	address_space		= ["10.0.0.0/16"]

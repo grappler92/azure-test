@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "spoke" {
 	location 	= var.region
 }
 
-module "vnet" {
+module "vnet-spoke" {
 	source 				= "Azure/vnet/azurerm"
 	resource_group_name	= azurerm_resource_group.spoke.name
 	address_space		= ["10.1.0.0/16"]
