@@ -28,17 +28,17 @@ resource "azurerm_resource_group" "spoke" {
 	location 	= var.region
 }
 
-module "vnet-spoke" {
-	source 				= "Azure/vnet/azurerm"
-    version             = "2.5.0"
-	resource_group_name	= azurerm_resource_group.spoke.name
-    vnet_name           = "vnet-${var.spoke-name}-${var.region_code}"
-	address_space		= ["10.1.0.0/16"]
-	subnet_prefixes		= ["10.1.1.0/24","10.1.2.0/24","10.1.3.0/24","10.1.4.0/24"]
-	subnet_names		= ["presentation","application","database","privateendpoint"]
+# module "vnet-spoke" {
+# 	source 				= "Azure/vnet/azurerm"
+#     version             = "2.5.0"
+# 	resource_group_name	= azurerm_resource_group.spoke.name
+#     vnet_name           = "vnet-${var.spoke-name}-${var.region_code}"
+# 	address_space		= ["10.1.0.0/16"]
+# 	subnet_prefixes		= ["10.1.1.0/24","10.1.2.0/24","10.1.3.0/24","10.1.4.0/24"]
+# 	subnet_names		= ["presentation","application","database","privateendpoint"]
 
-	depends_on = [azurerm_resource_group.spoke]	
-}
+# 	depends_on = [azurerm_resource_group.spoke]	
+# }
 
 # resource "azurerm_route_table" "udr-1" {
 # 	name 							= "udr-${var.udr1-name}-${var.region_code}"
