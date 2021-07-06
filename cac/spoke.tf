@@ -39,7 +39,7 @@ resource "azurerm_subnet" "database" {
 	address_prefixes 		= ["${var.snet3-cidr}"]
 }
 
-resource "azurerm_subnet" "snet-4" {
+resource "azurerm_subnet" "privateendpoint" {
 	name 					= "snet-${var.snet-4-name}-${var.region_code}"
 	resource_group_name 	= azurerm_resource_group.spoke.name
 	virtual_network_name 	= azurerm_virtual_network.spoke.name
@@ -60,18 +60,18 @@ resource "azurerm_route_table" "udr-1" {
 	}
 }
 
-resource "azurerm_subnet_route_table_association" "snet-1" {
-	subnet_id 		= azurerm_subnet.snet-1.id
+resource "azurerm_subnet_route_table_association" "presentation" {
+	subnet_id 		= azurerm_subnet.presentation.id
 	route_table_id	= azurerm_route_table.udr-1.id
 }
 
-resource "azurerm_subnet_route_table_association" "snet-2" {
-	subnet_id 		= azurerm_subnet.snet-2.id
+resource "azurerm_subnet_route_table_association" "application" {
+	subnet_id 		= azurerm_subnet.application.id
 	route_table_id	= azurerm_route_table.udr-1.id
 }
 
-resource "azurerm_subnet_route_table_association" "snet-3" {
-	subnet_id 		= azurerm_subnet.snet-3.id
+resource "azurerm_subnet_route_table_association" "database" {
+	subnet_id 		= azurerm_subnet.database.id
 	route_table_id	= azurerm_route_table.udr-1.id
 }
 
