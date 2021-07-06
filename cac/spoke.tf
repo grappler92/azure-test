@@ -129,8 +129,8 @@ module "nsg-test" {
 	  	sources				= null
       	service = [                                                       ## Mandatory services List
         	{
-          		protocol = "Tcp"       ### String Var
-          		ports    = ["443"]     ### List Var
+          		protocol 				= "Tcp"       ### String Var
+          		destination_port_range  = ["443"]     ### List Var
         	}
       	]
     extra_attributes = {    ### Optional list variable to set priority or any future addtion to the format 
