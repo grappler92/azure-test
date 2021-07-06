@@ -7,6 +7,7 @@ resource "azurerm_resource_group" "hub" {
 module "vnet-hub" {
 	source 				= "Azure/vnet/azurerm"
 	resource_group_name	= azurerm_resource_group.hub.name
+    vnet_name           = "vnet-${var.hub-name}-${var.region_code}"
 	address_space		= ["10.0.0.0/16"]
 	subnet_prefixes		= ["10.0.1.0/24"]
 	subnet_names		= ["GatewaySubnet"]
@@ -35,6 +36,7 @@ resource "azurerm_resource_group" "spoke" {
 module "vnet-spoke" {
 	source 				= "Azure/vnet/azurerm"
 	resource_group_name	= azurerm_resource_group.spoke.name
+    vnet_name           = "vnet-${var.spoke-name}-${var.region_code}"
 	address_space		= ["10.1.0.0/16"]
 	subnet_prefixes		= ["10.1.1.0/24","10.1.2.0/24","10.1.3.0/24","10.1.4.0/24"]
 	subnet_names		= ["presentation","application","database","privateendpoint"]
