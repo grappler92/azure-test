@@ -4,12 +4,32 @@ resource "azurerm_resource_group" "spoke" {
 	location 	= var.region
 }
 
-resource "azurerm_virtual_network" "spoke" {
-	name 				= "vnet-${var.spoke-name}-${var.region_code}"
-	address_space 		= ["${var.spoke-cidr}"]
-	location 			= azurerm_resource_group.spoke.location
-	resource_group_name = azurerm_resource_group.spoke.name
+module "vnet" {
+	source 				= "Azure/vnet/azurerm"
+	resource_group_name	= azurerm_resource_group.spoke.name
+	address_space		= ["10.1.0.0/16"]
+	subnet_prefixes		= ["10.1.1.0/24","10.1.2.0/24","10.1.3.0/24","10.1.4.0/24"]
+	subnet_names		= ["presentation","application","database","privateendpoint"]
+
+	# subnet_service_endpoints = {
+	# 	subnet2	= []
+	# 	subnet3	= []
+	# }
+
+	tags = {
+		environment	= "test"
+		costcenter	= "1111"
+	}
+
+	depends_on = [azurerm_resource_group.spoke]	
 }
+
+# resource "azurerm_virtual_network" "spoke" {
+# 	name 				= "vnet-${var.spoke-name}-${var.region_code}"
+# 	address_space 		= ["${var.spoke-cidr}"]
+# 	location 			= azurerm_resource_group.spoke.location
+# 	resource_group_name = azurerm_resource_group.spoke.name
+# }
 
 resource "azurerm_virtual_network_peering" "spoke" {
 	name 						= "peer-${var.hub-name}-${var.region_code}"
@@ -18,34 +38,34 @@ resource "azurerm_virtual_network_peering" "spoke" {
 	remote_virtual_network_id 	= azurerm_virtual_network.hub.id
 }
 
-resource "azurerm_subnet" "presentation" {
-	name 					= "snet-${var.snet-pres-name}-${var.region_code}"
-	resource_group_name 	= azurerm_resource_group.spoke.name
-	virtual_network_name 	= azurerm_virtual_network.spoke.name
-	address_prefixes 		= ["${var.snet1-cidr}"]
-}
+# resource "azurerm_subnet" "presentation" {
+# 	name 					= "snet-${var.snet-pres-name}-${var.region_code}"
+# 	resource_group_name 	= azurerm_resource_group.spoke.name
+# 	virtual_network_name 	= azurerm_virtual_network.spoke.name
+# 	address_prefixes 		= ["${var.snet1-cidr}"]
+# }
 
-resource "azurerm_subnet" "application" {
-	name 					= "snet-${var.snet-app-name}-${var.region_code}"
-	resource_group_name 	= azurerm_resource_group.spoke.name
-	virtual_network_name 	= azurerm_virtual_network.spoke.name
-	address_prefixes 		= ["${var.snet2-cidr}"]
-}
+# resource "azurerm_subnet" "application" {
+# 	name 					= "snet-${var.snet-app-name}-${var.region_code}"
+# 	resource_group_name 	= azurerm_resource_group.spoke.name
+# 	virtual_network_name 	= azurerm_virtual_network.spoke.name
+# 	address_prefixes 		= ["${var.snet2-cidr}"]
+# }
 
-resource "azurerm_subnet" "database" {
-	name 					= "snet-${var.snet-db-name}-${var.region_code}"
-	resource_group_name 	= azurerm_resource_group.spoke.name
-	virtual_network_name 	= azurerm_virtual_network.spoke.name
-	address_prefixes 		= ["${var.snet3-cidr}"]
-}
+# resource "azurerm_subnet" "database" {
+# 	name 					= "snet-${var.snet-db-name}-${var.region_code}"
+# 	resource_group_name 	= azurerm_resource_group.spoke.name
+# 	virtual_network_name 	= azurerm_virtual_network.spoke.name
+# 	address_prefixes 		= ["${var.snet3-cidr}"]
+# }
 
-resource "azurerm_subnet" "privateendpoint" {
-	name 					= "snet-${var.snet-4-name}-${var.region_code}"
-	resource_group_name 	= azurerm_resource_group.spoke.name
-	virtual_network_name 	= azurerm_virtual_network.spoke.name
-	address_prefixes 		= ["${var.snet4-cidr}"]
-	enforce_private_link_endpoint_network_policies = true
-}
+# resource "azurerm_subnet" "privateendpoint" {
+# 	name 					= "snet-${var.snet-4-name}-${var.region_code}"
+# 	resource_group_name 	= azurerm_resource_group.spoke.name
+# 	virtual_network_name 	= azurerm_virtual_network.spoke.name
+# 	address_prefixes 		= ["${var.snet4-cidr}"]
+# 	enforce_private_link_endpoint_network_policies = true
+# }
 
 resource "azurerm_route_table" "udr-1" {
 	name 							= "udr-${var.udr1-name}-${var.region_code}"
