@@ -118,7 +118,7 @@ resource "azurerm_resource_group" "nsg-rg" {
 	location 	= var.region
 }
 
-module "nsg-test" {
+module "network-security-group" {
 	source 		= "app.terraform.io/grappler92/network-security-group/azurerm"
 	resource_group_name 	= azurerm_resource_group.nsg-rg.name
 	security_group_name		= "nsg-test-cac"
