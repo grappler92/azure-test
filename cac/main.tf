@@ -98,9 +98,9 @@ module "network-security-group" {
 
 #######################################################################
 
-module "vnet-peering" {
-    source                  = "Azure/vnetpeering/azurerm"
-    vnet_peering_names      = ["peer2spoke", "peer2hub"]
-    vnet_names              = [module.vnet-hub.vnet_name, module.vnet-spoke.vnet_name]
-    resource_group_names    = [azurerm_resource_group.hub.name, azurerm_resource_group.spoke.name]
-}
+# module "vnet-peering" {
+#     source                  = "Azure/vnetpeering/azurerm"
+#     vnet_peering_names      = ["peer2spoke", "peer2hub"]
+#     vnet_names              = [module.vnet-hub.vnet_name, module.vnet-spoke.vnet_name]
+#     resource_group_names    = [azurerm_resource_group.hub.name, azurerm_resource_group.spoke.name]
+# }
