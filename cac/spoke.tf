@@ -117,7 +117,7 @@ resource "azurerm_subnet_route_table_association" "database" {
 
 module "nsg-test" {
 	source 		= "app.terraform.io/grappler92/nsg/azurerm"
-	version 	= "0.0.7"                                                 ## Mandatory , please use the most current version
+	version 	= "0.0.8"                                                 ## Mandatory , please use the most current version
  	rg-nsg-name	= "rg-test"
 	location	= "canadacentral"
 	region_code = "cac"
