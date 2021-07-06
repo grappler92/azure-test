@@ -80,20 +80,20 @@ resource "azurerm_route_table" "udr-1" {
 	}
 }
 
-resource "azurerm_subnet_route_table_association" "presentation" {
-	subnet_id 		= azurerm_subnet.presentation.id
-	route_table_id	= azurerm_route_table.udr-1.id
-}
+# resource "azurerm_subnet_route_table_association" "presentation" {
+# 	subnet_id 		= azurerm_subnet.presentation.id
+# 	route_table_id	= azurerm_route_table.udr-1.id
+# }
 
-resource "azurerm_subnet_route_table_association" "application" {
-	subnet_id 		= azurerm_subnet.application.id
-	route_table_id	= azurerm_route_table.udr-1.id
-}
+# resource "azurerm_subnet_route_table_association" "application" {
+# 	subnet_id 		= azurerm_subnet.application.id
+# 	route_table_id	= azurerm_route_table.udr-1.id
+# }
 
-resource "azurerm_subnet_route_table_association" "database" {
-	subnet_id 		= azurerm_subnet.database.id
-	route_table_id	= azurerm_route_table.udr-1.id
-}
+# resource "azurerm_subnet_route_table_association" "database" {
+# 	subnet_id 		= azurerm_subnet.database.id
+# 	route_table_id	= azurerm_route_table.udr-1.id
+# }
 
 
 
