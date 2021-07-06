@@ -117,7 +117,7 @@ resource "azurerm_subnet_route_table_association" "snet-3" {
 
 module "nsg-test" {
 	source 	= "app.terraform.io/app/grappler92/workspaces/terraform-azurerm-nsg"
-	version = "v0.1"                                                      ## Mandatory , please use the most current version
+	version = "v0.2"                                                      ## Mandatory , please use the most current version
  	rules = {
     	test-rule-1 = {                                       ## Mandatory Name of the Firewall Rule
       	name          		= "test01"     ## Mandatory Description of FW Rule
