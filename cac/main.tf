@@ -17,11 +17,6 @@ module "vnet-hub" {
 	# 	subnet3	= []
 	# }
 
-	tags = {
-		environment	= "test"
-		costcenter	= "1111"
-	}
-
 	depends_on = [azurerm_resource_group.hub]	
 }
 
@@ -40,16 +35,6 @@ module "vnet-spoke" {
 	address_space		= ["10.1.0.0/16"]
 	subnet_prefixes		= ["10.1.1.0/24","10.1.2.0/24","10.1.3.0/24","10.1.4.0/24"]
 	subnet_names		= ["presentation","application","database","privateendpoint"]
-
-	# subnet_service_endpoints = {
-	# 	subnet2	= []
-	# 	subnet3	= []
-	# }
-
-	tags = {
-		environment	= "test"
-		costcenter	= "1111"
-	}
 
 	depends_on = [azurerm_resource_group.spoke]	
 }
@@ -80,11 +65,6 @@ module "udr-spoke" {
     route_prefixes      = ["0.0.0.0/0"]
     route_nexthop_types = ["Internet"]
     route_names         = ["default-route"]
-
-    tags = {
-        environment = "test"
-        costcenter  = "1111"
-    }
 }
 
 resource "azurerm_resource_group" "nsg-rg" {
@@ -109,10 +89,6 @@ module "network-security-group" {
 		description				= "my test nsg using public module"
 	},
 	]
-	tags = {
-		environment	= "test"
-		costcenter	= "1111"
-	}
 
 	depends_on = [azurerm_resource_group.nsg-rg]
 }	
