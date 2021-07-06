@@ -65,6 +65,11 @@ module "udr-spoke" {
     route_prefixes      = ["0.0.0.0/0"]
     route_nexthop_types = ["Internet"]
     route_names         = ["default-route"]
+
+    tags = {
+        environment = "test"
+        costcenter  = "1111"
+    }
 }
 
 resource "azurerm_resource_group" "nsg-rg" {
