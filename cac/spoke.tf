@@ -116,7 +116,7 @@ resource "azurerm_subnet_route_table_association" "snet-3" {
 # }
 
 module "nsg-test" {
-	source 	= "app.terraform.io/grappler92/azurerm/nsg"
+	source 	= "app.terraform.io/grappler92/nsg/azurerm"
 	version = "v0.3"                                                      ## Mandatory , please use the most current version
  	rg-nsg-name	= "rg-test"
 	location	= "canadacentral"
