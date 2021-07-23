@@ -48,6 +48,7 @@ module "gcp-nane" {
     source                      = "./nane"
     vproject                    = var.project
     region                      = "northamerica-northeast1"
+    vpc_name                    = "vpc-test"
     snet_transport_name_nane    = "transport-nane"
     addr_transport_range_nane   = "10.1.1.0/24"
 }
