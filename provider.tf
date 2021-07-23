@@ -29,5 +29,5 @@ provider "azurerm" {
 
 provider "google" {
     project         = var.ARM_PROJECT
-    credentials     = var.tf-cloud-sa
+    credentials     = var.GOOGLE_CLOUD_KEYFILE_JSON
 }
