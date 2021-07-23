@@ -10,7 +10,7 @@ variable "ARM_CLIENT_SECRET" {
 variable "ARM_TENANT_ID" {
 }
 
-variable "tf-cloud-sa" {
+variable "GOOGLE_CLOUD_KEYFILE_JSON" {
 }
 
 variable "ARM_PROJECT" {
