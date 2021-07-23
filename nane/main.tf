@@ -11,7 +11,7 @@ resource "google_compute_subnetwork" "transport" {
   name            = var.snet_transport_name_nane
   ip_cidr_range   = var.addr_transport_range_nane
   network         = google_compute_network.vpc.self_link
-  region          = var.region1
+  region          = var.region
   description     = "Transport Subnet northamerica-northeast"
 }
 
