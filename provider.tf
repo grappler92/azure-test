@@ -4,8 +4,11 @@ terraform {
             source = "hashicorp/azurerm"
             version = "=2.46.0"
             }
+        google = {
+            source = "hashicorp/google"
+            version = "3.76.0"
+            }            
         }
-
     backend "remote" {
         hostname = "app.terraform.io"
         organization = "grappler92"
@@ -22,4 +25,9 @@ provider "azurerm" {
   client_secret   = var.ARM_CLIENT_SECRET
   tenant_id       = var.ARM_TENANT_ID    
   features {}
+}
+
+provider "google" {
+    project         = var.ARM_PROJECT
+    credentials     = var.tf-cloud-sa
 }

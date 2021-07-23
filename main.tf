@@ -43,3 +43,11 @@
 #     udr1-name       = "one"
 #     nsg1-name       = "one"
 # }
+
+module "gcp-nane" {
+    source                      = "./nane"
+    vproject                    = var.project
+    region                      = "northamerica-northeast1"
+    snet_transport_name_nane    = "transport-nane"
+    addr_transport_range_nane   = "10.1.1.0/24"
+}
